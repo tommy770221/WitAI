@@ -1,5 +1,6 @@
 package com.tommy;
 
+import com.spreada.utils.chinese.ZHConverter;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -18,9 +19,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -50,12 +53,14 @@ public class WitAIAPI {
         try {
             System.out.println(response2.getStatusLine());
             HttpEntity entity2 = response2.getEntity();
-            System.out.println(EntityUtils.toString(response2.getEntity()));
+            String response=EntityUtils.toString(response2.getEntity());
+            System.out.println(response);
+            JSONObject jsonObject=new JSONObject(response);
+            String returnText=new String(jsonObject.getString("_text"));
+            System.out.println(new String(returnText.getBytes("8859_1"),"UTF-8"));
             System.out.println("end speech"+new Date().toLocaleString());
 
-            // do something useful with the response body
-            // and ensure it is fully consumed
-            EntityUtils.consume(entity2);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
